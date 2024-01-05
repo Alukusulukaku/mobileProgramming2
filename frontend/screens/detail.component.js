@@ -91,10 +91,28 @@ export const DetailsScreen = ({ route, navigation }) => {
   const navigateBack = () => {
     navigation.goBack();
   };
-  const AddToCart = async (id) => {
+  const AddToCart = async (product) => {
     try {
-      const produtValue = JSON.stringify([{ id: id, qty: 1 }]);
-      await AsyncStorage.setItem("cart", produtValue);
+      await AsyncStorage.getItem("cart", (err, result) => {
+        const productValue = {
+          userId: 1,
+          product: product,
+          qty: 1,
+          price: product.price,
+        };
+        if (result != null) {
+          console.log("Data Found: ", result);
+
+          var newIds = JSON.parse(result);
+          newIds.push(productValue);
+          AsyncStorage.setItem("cart", JSON.stringify(newIds));
+        } else {
+          const carts = [];
+          carts.push(productValue);
+          console.log("Data Not Found");
+          AsyncStorage.setItem("cart", JSON.stringify(carts));
+        }
+      });
     } catch (e) {}
   };
 
@@ -217,7 +235,7 @@ export const DetailsScreen = ({ route, navigation }) => {
             <Button
               size="medium"
               status="danger"
-              onPress={AddToCart(product.id)}
+              onPress={() => AddToCart(product)}
               style={{
                 width: "100%",
                 marginVertical: 10,

@@ -11,6 +11,7 @@ import { DetailsScreen } from "./screens/detail.component";
 import { HomeScreen } from "./screens/home.component";
 import { useBottomNavBar } from "./context/BottomNavBarContext";
 import CartScreen from "./screens/cart.component";
+import ContactScreen from "./screens/contact.component";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -41,6 +42,15 @@ const UserIcon = (props) => (
   />
 );
 
+const MapIcon = (props) => (
+  <Icon
+    {...props}
+    style={[props.style, { width: 30, height: 30 }]}
+    name="map"
+    pack="fa5"
+  />
+);
+
 function BottomTabBar({ navigation, state }) {
   const { tabBarVisible } = useBottomNavBar();
 
@@ -58,6 +68,7 @@ function BottomTabBar({ navigation, state }) {
       <BottomNavigationTab title={"Home"} icon={HomeIcon} />
       <BottomNavigationTab title={"Cart"} icon={CartIcon} />
       <BottomNavigationTab title={"User"} icon={UserIcon} />
+      <BottomNavigationTab title={"Location"} icon={MapIcon} />
     </BottomNavigation>
   );
 }
@@ -70,6 +81,7 @@ const TabNavigator = () => (
     <Screen name="Home" component={HomeScreen} />
     <Screen name="Cart" component={CartScreen} />
     <Screen name="Users" component={LoginScreen} />
+    <Screen name="Location" component={ContactScreen} />
     <Screen name="Details" component={DetailsScreen} />
   </Navigator>
 );

@@ -8,6 +8,7 @@ import { AppNavigator } from "./navigator.component";
 import { StatusBar } from "react-native";
 import { BottomNavBarProvider } from "./context/BottomNavBarContext";
 import { MCIIcon } from "./MCI-icons";
+import UserProvider from "./context/UserProvider";
 
 export default function App() {
   return (
@@ -18,9 +19,11 @@ export default function App() {
       <StatusBar hidden={true} />
 
       <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
-        <BottomNavBarProvider>
-          <AppNavigator />
-        </BottomNavBarProvider>
+        <UserProvider>
+          <BottomNavBarProvider>
+            <AppNavigator />
+          </BottomNavBarProvider>
+        </UserProvider>
       </ApplicationProvider>
     </>
   );

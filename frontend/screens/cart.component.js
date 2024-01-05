@@ -9,6 +9,8 @@ import {
   TopNavigationAction,
 } from "@ui-kitten/components";
 import React, { useEffect } from "react";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   SafeAreaView,
   ScrollView,
@@ -17,6 +19,8 @@ import {
   View,
 } from "react-native";
 import ProductItem from "../components/cart/productItem";
+import { useFocusEffect } from "@react-navigation/native";
+import { useAuth } from "../context/UserProvider";
 
 const BackIcon = (props) => (
   <Icon
@@ -45,25 +49,33 @@ const ApplyCouponBtn = () => (
 );
 
 export default function CartScreen({ navigation }) {
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const cartItems = await AsyncStorage.getItem("cart");
-        if (cartItems !== null) {
-          alert(JSON.parse(cartItems));
+  const { token } = useAuth();
+  useFocusEffect(
+    React.useCallback(() => {
+      const getData = async () => {
+        try {
+          const cartItems = await AsyncStorage.getItem("cart");
+          if (cartItems !== null) {
+            alert(JSON.parse(cartItems));
+            console.log(JSON.parse(cartItems));
+          }
+        } catch (e) {
+          alert(e);
         }
-      } catch (e) {
-        alert(e);
-      }
-    };
-    getData();
-  }, []);
+      };
+      getData();
+    }, [])
+  );
   const BackAction = () => (
     <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
   );
   const navigateBack = () => {
     navigation.goBack();
   };
+
+  if (!token) {
+    navigation.navigate("Users");
+  }
 
   return (
     <SafeAreaView>
